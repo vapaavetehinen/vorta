@@ -6,6 +6,7 @@ from vorta.models import RepoModel, ArchiveModel, BackupProfileMixin
 from vorta.utils import pretty_bytes, get_private_keys, get_asset, borg_compat
 from .ssh_dialog import SSHAddWindow
 from .repo_add_dialog import AddRepoWindow, ExistingRepoWindow
+from .passphrase_change_dialog import PassChangeWindow
 from .utils import get_colored_icon
 
 uifile = get_asset('UI/repotab.ui')
@@ -57,6 +58,13 @@ class RepoTab(RepoBase, RepoUI, BackupProfileMixin):
         self.init_repo_stats()
         self.populate_from_profile()
         self.set_icons()
+
+        self.changePassphraseButton.clicked.connect(self.open_passphrase_change_window)
+
+    def open_passphrase_change_window(self):
+        window = PassChangeWindow()
+        window.setParent(self, QtCore.Qt.Sheet)
+        window.show()
 
     def set_icons(self):
         self.repoRemoveToolbutton.setIcon(get_colored_icon('unlink'))
