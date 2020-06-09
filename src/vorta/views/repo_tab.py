@@ -95,11 +95,16 @@ class RepoTab(RepoBase, RepoUI, BackupProfileMixin):
             self.sizeDeduplicated.setText(pretty_bytes(repo.unique_size))
             self.sizeOriginal.setText(pretty_bytes(repo.total_size))
             self.repoEncryption.setText(str(repo.encryption))
+            if repo.encryption == 'repokey':
+                self.changePassphraseButton.show()
+            else:
+                self.changePassphraseButton.hide()
         else:
             self.sizeCompressed.setText('')
             self.sizeDeduplicated.setText('')
             self.sizeOriginal.setText('')
             self.repoEncryption.setText('')
+            self.chagePassPhraseButton.hide()
         self.repo_changed.emit()
 
     def init_ssh(self):
